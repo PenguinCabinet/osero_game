@@ -1,0 +1,16 @@
+{
+    "name": "落ちものオセロ",
+    "short_name": "落ちオセ",
+    "start_url": "/?utm_source=web_app_manifest",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#fff",
+    "theme_color": "#0aa574",
+    "icons": [
+      {
+        "src": "https://raw.githubusercontent.com/PenguinCabinet/osero_game/master/images/icon.PNG",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }
