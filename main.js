@@ -123,11 +123,25 @@ function create(){
     this.LeftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     this.SKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
+    /*
+    this.input.keyboard.on('keydown_UP', function (event) {
+        player_move2(0);
+    });
+    this.input.keyboard.on('keydown_DOWN', function (event) {
+        player_move2(1);
+    });
+    this.input.keyboard.on('keydown_RIGHT', function (event) {
+        player_move2(2);
+    });
+    this.input.keyboard.on('keydown_LEFT', function (event) {
+        player_move2(3);
+    });
+    */
 }
 
 
 let player_move_flags=[false,false,false,false];
-function player_move(my_this){
+function player_move(my_this,b,b2){
     let bp_x=Player_Board_data_x;
     let bp_y=Player_Board_data_y;
 
@@ -183,7 +197,64 @@ function player_move(my_this){
 
     player_Board_data[bp_x][bp_y]=0;
     player_Board_data[Player_Board_data_x][Player_Board_data_y]=3;
+    clear_Print_Board();
+    Print_Board(b,b2,my_this);
 }
+
+function player_move2(v,b,b2){
+    if(is_title)
+        return;
+    let bp_x=Player_Board_data_x;
+    let bp_y=Player_Board_data_y;
+
+    console.log(v);
+    //console.log(player_move_flags[0]);
+    if (v==0) {
+            Player_Board_data_y--;
+            player_move_flags[0]=true;
+    }else{
+        player_move_flags[0]=false;
+    }
+
+    if (v==1){
+            Player_Board_data_y++;
+            player_move_flags[1]=true;
+    }else{
+        player_move_flags[1]=false;
+    }
+
+    if (v==2){
+            Player_Board_data_x++;
+            player_move_flags[2]=true;
+    }else{
+        player_move_flags[2]=false;
+    }
+
+    if (v==3){
+            Player_Board_data_x--;
+            player_move_flags[3]=true;
+    }else{
+        player_move_flags[3]=false;
+    }
+
+    if(Player_Board_data_x<0){
+        Player_Board_data_x=0;
+    }
+    if(Player_Board_data_x>=8){
+        Player_Board_data_x=7;
+    }
+    if(Player_Board_data_y<0){
+        Player_Board_data_y=0;
+    }
+    if(Player_Board_data_y>=8){
+        Player_Board_data_y=7;
+    }
+
+    player_Board_data[bp_x][bp_y]=0;
+    player_Board_data[Player_Board_data_x][Player_Board_data_y]=3;
+    Print_Board(my_this,)
+}
+
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -298,7 +369,7 @@ is_title=true;
 function update(){
     if(!is_title){
 
-        player_move(this);
+        player_move(this,Board_data,player_Board_data);
         if(update_time>=update_wait_time){
             update_wait_time=Math.max((200-(player_score*0.2)), 100);
             down_stone();
