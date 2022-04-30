@@ -83,6 +83,8 @@ function clear_Print_Board(b,my_this){
     }
 }
 
+Is_player_AI=false;
+
 function create(){
 
     this.add.rectangle((osero_size+info_size)/2,osero_size/2,osero_size+info_size,osero_size,0xfffffff);
@@ -122,6 +124,9 @@ function create(){
     this.RightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     this.LeftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     this.SKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.TKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+    this.AKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+
 
     /*
     this.input.keyboard.on('keydown_UP', function (event) {
@@ -207,7 +212,7 @@ function player_move2(v,b,b2){
     let bp_x=Player_Board_data_x;
     let bp_y=Player_Board_data_y;
 
-    console.log(v);
+    //console.log(v);
     //console.log(player_move_flags[0]);
     if (v==0) {
             Player_Board_data_y--;
@@ -253,6 +258,86 @@ function player_move2(v,b,b2){
     player_Board_data[bp_x][bp_y]=0;
     player_Board_data[Player_Board_data_x][Player_Board_data_y]=3;
     Print_Board(my_this,)
+}
+
+function player_move_AI_foward(my_this,b,b2,x,y){
+    let dy=0;
+    if(y-1<0){
+        return 1;
+    }
+    for(;y-dy>=0;dy++){
+        //console.log(y-dy);
+        if(b[x][y-dy]==1){
+            //console.log("FALSE "+dy.toString());
+            return dy;
+        }
+    }
+    //console.log("TRUE");
+    return 100000;
+}
+
+function conv_dir_var(x){
+    if(x==0)return x;
+    return x<0?-1:1;
+}
+
+function player_move_AI(my_this,b,b2){
+    let bp_x=Player_Board_data_x;
+    let bp_y=Player_Board_data_y;
+
+    if(player_move_AI_foward(my_this,b,b2,bp_x,bp_y)<=8){
+        let Max_now=-10000000000;
+        let tdx=0;
+        let tdy=0;
+        loop_end:
+        for(let dx=-8;dx<=8;dx++){
+            //console.log(dx);
+            for(let dy=-8;dy<=8;dy++){
+                if(bp_x+dx<0||bp_x+dx>=8||bp_y+dy<0||bp_y+dy>=8)
+                    continue;
+                if(bp_x+conv_dir_var(dx)<0||bp_x+conv_dir_var(dx)>=8
+                ||bp_y+conv_dir_var(dy)<0||bp_y+conv_dir_var(dy)>=8)
+                    continue;
+                if(b[bp_x+dx][bp_y+dy]==0){
+                    if(
+                        b[bp_x+conv_dir_var(dx)][bp_y+conv_dir_var(dy)]==0&&
+                        player_move_AI_foward(my_this,b,b2,bp_x+conv_dir_var(dx),bp_y+conv_dir_var(dy))!=1
+                    ){
+                        //console.log(player_move_AI_foward(my_this,b,b2,bp_x+dx,bp_y+dy));
+                        if(player_move_AI_foward(my_this,b,b2,bp_x+dx,bp_y+dy)>=Max_now){
+                            Max_now=player_move_AI_foward(my_this,b,b2,bp_x+dx,bp_y+dy)
+                            //console.log(Max_now);
+                            tdx=dx;
+                            tdy=dy;
+                        }
+                    }
+                }
+            }
+        }
+        console.log(Max_now);
+        //onsole.log(tdx,tdy);
+        Player_Board_data_x+=conv_dir_var(tdx);
+        Player_Board_data_y+=conv_dir_var(tdy);
+    }
+
+
+    if(Player_Board_data_x<0){
+        Player_Board_data_x=0;
+    }
+    if(Player_Board_data_x>=8){
+        Player_Board_data_x=7;
+    }
+    if(Player_Board_data_y<0){
+        Player_Board_data_y=0;
+    }
+    if(Player_Board_data_y>=8){
+        Player_Board_data_y=7;
+    }
+
+    player_Board_data[bp_x][bp_y]=0;
+    player_Board_data[Player_Board_data_x][Player_Board_data_y]=3;
+    clear_Print_Board();
+    Print_Board(b,b2,my_this);
 }
 
 
@@ -363,13 +448,27 @@ function Game_over(my_this){
     Print_Board(Board_data,player_Board_data,my_this);
 }
 
+function Twitter_share(score){
+    const baseUrl = 'https://twitter.com/intent/tweet?';
+    const text = ['text',`落ちものオセロ\nスコア:${score.toString()}\n`];
+    const hashtags = ['hashtags', ['落ちものオセロ'].join(',')];
+    const url = ['url', location.href];
+    //const via = ['via', 'tos'];
+    const query = new URLSearchParams([text, hashtags, url]).toString();
+    const shareUrl = `${baseUrl}${query}`;
+    window.open(shareUrl, '_blank')
+}
+
 update_time=0;
 update_wait_time=100;
 is_title=true;
 function update(){
     if(!is_title){
-
-        player_move(this,Board_data,player_Board_data);
+        if(!Is_player_AI){
+            player_move(this,Board_data,player_Board_data);
+        }else{
+            player_move_AI(this,Board_data,player_Board_data);
+        }
         if(update_time>=update_wait_time){
             update_wait_time=Math.max((200-(player_score*0.2)), 100);
             down_stone();
@@ -384,6 +483,16 @@ function update(){
     }else{
         if(this.SKey.isDown){
             is_title=false;
+            Is_player_AI=false;
+            Game_init(this);
+            clear_Print_Board();
+        }
+        if(this.TKey.isDown){
+            Twitter_share(player_score);
+        }
+        if(this.AKey.isDown){
+            is_title=false;
+            Is_player_AI=true;
             Game_init(this);
             clear_Print_Board();
         }
