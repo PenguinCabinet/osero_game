@@ -2,6 +2,17 @@ const osero_size=800;
 const one_osero_size=osero_size/8;
 const info_size=200;
 
+
+function tweet_run(s){
+    let text=`落ちものオセロ スコアは${s}点!%0D%0A%0D%0A`
+    let hashtags = "落ちものオセロ%0D%0A";
+    let url = encodeURIComponent(location.href+"\n") 
+    window.open(
+        "https://twitter.com/share?text=" + text + "&hashtags=" + hashtags + "&url=" + url
+        , '_blank'
+    );
+}
+
 var config = {
     type: Phaser.AUTO,
     width: osero_size+info_size,
@@ -122,6 +133,7 @@ function create(){
     this.RightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     this.LeftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     this.SKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.TKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
 
     /*
     this.input.keyboard.on('keydown_UP', function (event) {
@@ -358,7 +370,7 @@ function Game_over(my_this){
     Board_data[3][3]=2;
     Board_data[4][4]=2;
 
-    my_this.info_how_to_start_text_UI.setText("Sキーでスタート");
+    my_this.info_how_to_start_text_UI.setText("Sキーでスタート\ntキーで\nスコアをツイート");
 
     Print_Board(Board_data,player_Board_data,my_this);
 }
@@ -386,6 +398,9 @@ function update(){
             is_title=false;
             Game_init(this);
             clear_Print_Board();
+        }
+        if(this.TKey.isDown){
+            tweet_run(player_score);
         }
     }
     update_time+=game.loop.delta;
