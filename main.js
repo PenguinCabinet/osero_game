@@ -400,7 +400,7 @@ function update(){
             clear_Print_Board();
         }
         if(this.TKey.isDown){
-            tweet_run(player_score);
+            tweet_run(Math.floor(Math.pow(player_score,1.2)));
         }
     }
     update_time+=game.loop.delta;
