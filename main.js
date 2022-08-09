@@ -123,8 +123,11 @@ function create(){
     this.score_text_UI = this.add.text(5, 100, "SCORE:0", {fontSize: 30});
     this.score_text_UI.setTint(0);
 
-    this.info_how_to_start_text_UI = this.add.text(5, 500, "LIFE:5", {fontSize: 25});
+    this.info_how_to_start_text_UI = this.add.text(5, 500, "LIFE:5", {fontSize: 23});
     this.info_how_to_start_text_UI.setTint(0);
+
+    this.info_how_to_start_text_English_UI = this.add.text(5, 600, "LIFE:5", {fontSize: 20});
+    this.info_how_to_start_text_English_UI.setTint(0);
     
     Game_over(this);
 
@@ -347,6 +350,7 @@ function Game_init(my_this){
     Set_score_UI(my_this,player_score);
 
     my_this.info_how_to_start_text_UI.setText("");
+    my_this.info_how_to_start_text_English_UI.setText("");
 }
 
 function Game_over(my_this){
@@ -371,6 +375,7 @@ function Game_over(my_this){
     Board_data[4][4]=2;
 
     my_this.info_how_to_start_text_UI.setText("Sキーでスタート\ntキーで\nスコアをツイート");
+    my_this.info_how_to_start_text_English_UI.setText("S key to start\nPress t key to\ntweet your score");
 
     Print_Board(Board_data,player_Board_data,my_this);
 }
