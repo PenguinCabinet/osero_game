@@ -4,14 +4,20 @@ const info_size=200;
 
 
 function tweet_run(s){
+    /*
     let text=`落ちものオセロ スコアは${s}点!%0D%0A%0D%0A`
     let hashtags = "落ちものオセロ%0D%0A";
-    let url = encodeURIComponent(location.href+"\n") 
+    let url = encodeURIComponent("https://penguincabinet.itch.io/reversi-game-of-the-fallen"+"\n") 
     window.open(
         "https://twitter.com/share?text=" + text + "&hashtags=" + hashtags + "&url=" + url
         , '_blank'
     );
+    console.log("OPEN");
+    */
 }
+
+console.log(osero_size+info_size);
+console.log(osero_size);
 
 var config = {
     type: Phaser.AUTO,
@@ -123,7 +129,7 @@ function create(){
     this.score_text_UI = this.add.text(5, 100, "SCORE:0", {fontSize: 30});
     this.score_text_UI.setTint(0);
 
-    this.info_how_to_start_text_UI = this.add.text(5, 500, "LIFE:5", {fontSize: 23});
+    this.info_how_to_start_text_UI = this.add.text(5, 500, "LIFE:5", {fontSize: 25});
     this.info_how_to_start_text_UI.setTint(0);
 
     this.info_how_to_start_text_English_UI = this.add.text(5, 600, "LIFE:5", {fontSize: 20});
@@ -374,8 +380,8 @@ function Game_over(my_this){
     Board_data[3][3]=2;
     Board_data[4][4]=2;
 
-    my_this.info_how_to_start_text_UI.setText("Sキーでスタート\ntキーで\nスコアをツイート");
-    my_this.info_how_to_start_text_English_UI.setText("S key to start\nPress t key to\ntweet your score");
+    my_this.info_how_to_start_text_UI.setText("Sキーでスタート");
+    my_this.info_how_to_start_text_English_UI.setText("S key to start");
 
     Print_Board(Board_data,player_Board_data,my_this);
 }
@@ -404,6 +410,7 @@ function update(){
             Game_init(this);
             clear_Print_Board();
         }
+        console.log(this.TKey.isDown);
         if(this.TKey.isDown){
             tweet_run(Math.floor(Math.pow(player_score,1.2)));
         }

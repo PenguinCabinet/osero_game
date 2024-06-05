@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
 
-    <title>落ちものオセロ(Reversi Game of the Fallen)</title>
-    <link rel="icon" href="images/icon.PNG">
+  <title>落ちものリバース</title>
+  <link rel="icon" href="images/icon.PNG">
 
-    <meta property="og:url" content="https://osero_game.penguincabinet.com/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="落ちものオセロ(Reversi Game of the Fallen)" />
-    <meta property="og:description" content="落ちものオセロ(Reversi Game of the Fallen)" />
-    <meta property="og:site_name" content="落ちものオセロ(Reversi Game of the Fallen)" />        
-    <meta property="og:image" content="https://osero_game.penguincabinet.com/explanation/img1.PNG" />
-    <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://osero_game.penguincabinet.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="落ちものリバース(Reversi Game of the Fallen)" />
+  <meta property="og:description" content="落ちものリバース(Reversi Game of the Fallen)" />
+  <meta property="og:site_name" content="落ちものリバース(Reversi Game of the Fallen)" />
+  <meta property="og:image" content="https://osero_game.penguincabinet.com/explanation/img1.PNG" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0aa574">
-    <!-- CDNによるphaserの読み込み -->
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser.min.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0aa574">
+  <!-- CDNによるphaserの読み込み -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser.min.js"></script>
 </head>
+
 <body>
-    <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('sw.js').then(function(registration) {
-            console.log('ServiceWorker の登録に成功しました。スコープ: ', registration.scope);
-          }).catch(function(err) {
-            console.log('ServiceWorker の登録に失敗しました。', err);
-          });
-        }
-    </script>
-    <script src="main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(function (registration) {
+        console.log('ServiceWorker の登録に成功しました。スコープ: ', registration.scope);
+      }).catch(function (err) {
+        console.log('ServiceWorker の登録に失敗しました。', err);
+      });
+    }
+  </script>
+  <script src="main.js"></script>
 </body>
